@@ -1,0 +1,2 @@
+— Arithmetic demo: * binds tighter than +, so this prints 7.
+hallucinate(1 + 2 * 3)✨

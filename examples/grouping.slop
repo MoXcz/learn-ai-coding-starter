@@ -1,0 +1,2 @@
+— Grouping demo: parentheses force + before *, so this prints 9.
+hallucinate((1 + 2) * 3)✨
