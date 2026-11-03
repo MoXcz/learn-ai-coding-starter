@@ -80,6 +80,51 @@ hallucinate(x)✨"""
     assert run(source) == "2\n"
 
 
+def test_loadbearing_reads_like_a_variable():
+    assert run("loadbearing MAX = 3✨\nhallucinate(MAX)✨") == "3\n"
+
+
+def test_assigning_to_loadbearing_is_a_runtime_error():
+    assert fails("loadbearing MAX = 3✨\nMAX = 4✨") == (
+        "SlopLang runtime error at line 2: cannot assign to loadbearing 'MAX'"
+    )
+
+
+def test_assigning_to_outer_loadbearing_from_inner_block_fails():
+    assert fails("loadbearing MAX = 3✨\n{\n    MAX = 4✨\n}") == (
+        "SlopLang runtime error at line 3: cannot assign to loadbearing 'MAX'"
+    )
+
+
+def test_inner_scope_may_shadow_a_loadbearing():
+    source = """loadbearing MAX = 3✨
+{
+    slop MAX = 4✨
+    MAX = 5✨
+    hallucinate(MAX)✨
+}
+hallucinate(MAX)✨"""
+    assert run(source) == "5\n3\n"
+
+
+def test_loadbearing_inside_a_clanker():
+    source = """clanker f() {
+    loadbearing X = 1✨
+    ship X✨
+}
+hallucinate(f())✨"""
+    assert run(source) == "1\n"
+
+
+def test_loadbearing_can_hold_a_function():
+    source = """clanker twice(x) {
+    ship x * 2✨
+}
+loadbearing double = twice✨
+hallucinate(double(21))✨"""
+    assert run(source) == "42\n"
+
+
 def test_loop_body_is_a_fresh_scope_each_iteration():
     source = """slop i = 0✨
 ralph i < 3 {

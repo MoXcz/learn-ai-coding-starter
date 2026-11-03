@@ -3,5 +3,6 @@
   "model": "opencode/deepseek-v4.1-flash-free",
   "permissions": [
     { "action": "shell", "resource": "bootdev run *", "effect": "allow" },
+    { "action": "run_slop", "resource": "*", "effect": "allow" },
   ],
 }
