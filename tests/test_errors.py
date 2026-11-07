@@ -65,6 +65,12 @@ CASES = [
         "stack overflow (call depth exceeded 500)",
     ),
     (
+        "hallucinate(1 / 0)✨",
+        "runtime",
+        1,
+        "division by zero",
+    ),
+    (
         "hallucinate(“a” + 1)✨",
         "runtime",
         1,

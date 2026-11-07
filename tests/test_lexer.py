@@ -55,6 +55,12 @@ def test_string_may_contain_em_dash_and_opening_quote():
     assert tokenize("“x — “y”")[0].literal == "x — “y"
 
 
+def test_comment_newline_still_counts_as_a_line():
+    tokens = tokenize("— comment\nx")
+    assert tokens[0] == Token(TokenType.IDENTIFIER, "x", None, 2)
+    assert tokens[1].line == 2
+
+
 @pytest.mark.parametrize(
     ("source", "line", "message"),
     [

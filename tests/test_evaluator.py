@@ -50,9 +50,10 @@ def test_equality_never_coerces(expression: str, expected: str):
     assert run(source) == f"{expected}\n"
 
 
-def test_division_by_zero_is_a_runtime_error():
-    assert fails("hallucinate(1 / 0)✨") == (
-        "SlopLang runtime error at line 1: cannot divide by zero"
+@pytest.mark.parametrize("expression", ["1 / 0", "0 / 0", "1 / (2 - 2)", "-1 / 0"])
+def test_division_by_zero_is_a_runtime_error(expression: str):
+    assert fails(f"hallucinate({expression})✨") == (
+        "SlopLang runtime error at line 1: division by zero"
     )
 
 
@@ -199,6 +200,21 @@ hallucinate(f())✨
 hallucinate(f)✨
 hallucinate(hallucinate)✨"""
     assert run(source) == "0\n-42\nstr\n✅\n❌\nnil\n<clanker f>\n<clanker hallucinate>\n"
+
+
+def test_hallucinate_joins_arguments_with_spaces():
+    source = """clanker f() { }
+hallucinate(1, “two”, ✅, ❌, f(), f, hallucinate)✨"""
+    assert run(source) == "1 two ✅ ❌ nil <clanker f> <clanker hallucinate>\n"
+
+
+def test_hallucinate_with_no_arguments_prints_a_blank_line():
+    assert run("hallucinate()✨") == "\n"
+
+
+def test_hallucinate_accepts_many_arguments():
+    arguments = ", ".join(str(n) for n in range(10))
+    assert run(f"hallucinate({arguments})✨") == " ".join(str(n) for n in range(10)) + "\n"
 
 
 def test_variation_selector_after_emoji_is_accepted():

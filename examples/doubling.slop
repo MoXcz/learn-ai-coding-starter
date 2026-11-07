@@ -1,0 +1,6 @@
+— Double a number with a clanker.
+clanker double(n) {
+    ship n * 2✨
+}
+
+hallucinate(double(13))✨
