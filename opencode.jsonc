@@ -12,6 +12,11 @@
       },
     },
   },
+  "compaction": {
+    "auto": true,
+    "keep": { "tokens": 10000 },
+    "buffer": 20000,
+  },
   "watcher": {
     "ignore": ["logs/**"],
   },
@@ -19,5 +24,6 @@
     { "action": "shell", "resource": "bootdev run *", "effect": "allow" },
     { "action": "run_slop", "resource": "*", "effect": "allow" },
     { "action": "subagent", "resource": "explore", "effect": "deny" },
+    { "action": "read", "resource": "*.env", "effect": "deny" },
   ],
 }

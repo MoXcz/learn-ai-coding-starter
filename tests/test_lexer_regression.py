@@ -10,9 +10,7 @@ def test_unhandled_character_reports_generic_unexpected_character_error(ch: str)
         tokenize(f"a {ch} b")
     assert info.value.line == 1
     assert info.value.message == f"unexpected character '{ch}'"
-    assert str(info.value) == (
-        f"SlopLang lexical error at line 1: unexpected character '{ch}'"
-    )
+    assert str(info.value) == (f"SlopLang lexical error at line 1: unexpected character '{ch}'")
 
 
 def test_unhandled_character_reports_the_line_it_occurs_on():

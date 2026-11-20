@@ -12,6 +12,7 @@ from sloperator.parser.ast import (
     Grouping,
     If,
     Literal,
+    Logical,
     Ship,
     VarDecl,
     Variable,
@@ -40,6 +41,18 @@ def test_grouping_overrides_precedence():
     expr = only_expression("(1 + 2) * 3✨")
     assert isinstance(expr, Binary) and expr.operator.type is TokenType.STAR
     assert isinstance(expr.left, Grouping)
+
+
+def test_comparison_binds_tighter_than_equality():
+    expr = only_expression("1 == 2 < 3✨")
+    assert isinstance(expr, Binary) and expr.operator.type is TokenType.EQUAL_EQUAL
+    assert isinstance(expr.right, Binary) and expr.right.operator.type is TokenType.LESS
+
+
+def test_equality_binds_tighter_than_logic_and():
+    expr = only_expression("a && b == c✨")
+    assert isinstance(expr, Logical) and expr.operator.type is TokenType.AND
+    assert isinstance(expr.right, Binary) and expr.right.operator.type is TokenType.EQUAL_EQUAL
 
 
 def test_calls_chain():
