@@ -23,6 +23,7 @@
   "permissions": [
     { "action": "shell", "resource": "bootdev run *", "effect": "allow" },
     { "action": "run_slop", "resource": "*", "effect": "allow" },
+    { "action": "skill", "resource": "create-test-program", "effect": "ask" },
     { "action": "subagent", "resource": "explore", "effect": "deny" },
     { "action": "read", "resource": "*.env", "effect": "deny" },
   ],
